@@ -13,7 +13,6 @@ if size(rawdata,1)~=37
         num=num+1;
         temp = rawdata(i,:);
         temp=temp-mean(temp);
-        %temp(abs(temp)>1000)=0;
         data0(num,:)=temp;
         data0(num,:)=filtfilt(b,a,data0(num,:)); 
     end
@@ -23,7 +22,6 @@ else
         num=num+1;
         temp = rawdata(i,:);
         temp=temp-mean(temp);
-        %temp(abs(temp)>1000)=0;
         data0(num,:)=temp;
         data0(num,:)=filtfilt(b,a,data0(num,:));
     end
