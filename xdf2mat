@@ -1,0 +1,35 @@
+stream=load_xdf(path_data);
+
+rawdata=stream{1,1}.time_series;
+fs=2048;
+Wn1 = 20/(fs/2); %the band of cutoff frequency
+Wn2 = 450/(fs/2); %the band of cutoff frequency
+[b,a]= butter(4,[Wn1 Wn2],'bandpass'); 
+num=0;
+data0=[];
+%64 channels
+if size(rawdata,1)~=37
+    for i=3:66
+        num=num+1;
+        temp = rawdata(i,:);
+        temp=temp-mean(temp);
+        %temp(abs(temp)>1000)=0;
+        data0(num,:)=temp;
+        data0(num,:)=filtfilt(b,a,data0(num,:)); 
+    end
+else
+    %64 channels
+    for i=3:34
+        num=num+1;
+        temp = rawdata(i,:);
+        temp=temp-mean(temp);
+        %temp(abs(temp)>1000)=0;
+        data0(num,:)=temp;
+        data0(num,:)=filtfilt(b,a,data0(num,:));
+    end
+end
+
+Data{1}=data0';
+SamplingFrequency=2048;
+Time{1,1}=rawdata(1,:)';
+save(path_save,"Data","SamplingFrequency","Time");
